@@ -2,19 +2,48 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Top Donatur - Toko Kisee</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard Top Donatur</title>
+    <style>
+        body { background-color: #121212; color: #e0e0e0; font-family: sans-serif; text-align: center; padding: 20px; }
+        h1 { color: #bb86fc; }
+        table { margin: 20px auto; width: 90%; max-width: 600px; border-collapse: collapse; background: #1e1e1e; border-radius: 8px; overflow: hidden; }
+        th { background: #3700b3; color: white; padding: 15px; }
+        td { padding: 12px; border-bottom: 1px solid #333; }
+    </style>
 </head>
 <body>
     <h1>🏆 Leaderboard Top Donatur</h1>
     <table id="donaturTable">
-        <thead>
-            <tr><th>Peringkat</th><th>Nama</th><th>Total Donasi</th></tr>
-        </thead>
-        <tbody id="tableBody">
-            <!-- Data akan dimuat otomatis oleh script.js -->
-        </tbody>
+        <thead><tr><th>Nama</th><th>Jumlah (Rp)</th></tr></thead>
+        <tbody id="tableBody"><tr><td colspan="2">Memuat data...</td></tr></tbody>
     </table>
-    <script src="script.js"></script>
+
+    <script>
+        // MASUKKAN DATA ANDA DI SINI
+        const BIN_ID = "GANTI_DENGAN_BIN_ID_ANDA";
+        const MASTER_KEY = "GANTI_DENGAN_MASTER_KEY_ANDA";
+        const DB_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
+
+        async function fetchData() {
+            try {
+                const res = await fetch(DB_URL, { headers: { "X-Master-Key": MASTER_KEY } });
+                const result = await res.json();
+                const data = result.record.donatur;
+                
+                const tableBody = document.getElementById('tableBody');
+                tableBody.innerHTML = "";
+                
+                // Urutkan donatur berdasarkan jumlah terbanyak (Top 1 ke bawah)
+                data.sort((a, b) => b.jumlah - a.jumlah).forEach(item => {
+                    tableBody.innerHTML += `<tr><td>${item.nama}</td><td>Rp ${item.jumlah.toLocaleString()}</td></tr>`;
+                });
+            } catch (e) {
+                document.getElementById('tableBody').innerHTML = "<tr><td colspan='2'>Gagal memuat data</td></tr>";
+            }
+        }
+        fetchData();
+    </script>
 </body>
 </html>
+
