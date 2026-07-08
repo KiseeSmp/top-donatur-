@@ -1,4 +1,4 @@
-const BIN_ID = "668cxxxxxxxxxxxxxxx"; // Ganti dengan ID bin Anda
+const BIN_ID = "6a4e36b1f5f4af5e2971918b"; // Ganti dengan ID bin Anda
 const MASTER_KEY = "MASUKKAN_MASTER_KEY_ANDA_DISINI"; 
 const DB_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
 
