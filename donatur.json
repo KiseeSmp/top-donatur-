@@ -1,23 +1,23 @@
-async function updateLeaderboard() {
+// Masukkan Bin ID Anda di bawah ini
+const BIN_ID = "668cxxxxxxxxxxxxxxx"; 
+const DB_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
+
+async function fetchData() {
     try {
-        const response = await fetch('https://URL_DATABASE_ANDA.firebaseio.com/donatur.json');
-        const data = await response.json();
+        const res = await fetch(DB_URL);
+        const result = await res.json();
+        const data = result.record.donatur;
+        
         const tableBody = document.getElementById('tableBody');
         tableBody.innerHTML = "";
-
-        // Mengubah objek menjadi array dan mengurutkan berdasarkan jumlah
-        const list = Object.entries(data).sort((a, b) => b[1].jumlah - a[1].jumlah);
-
-        list.forEach((item, index) => {
-            const row = `<tr>
-                <td>${index + 1}</td>
-                <td>${item[1].nama}</td>
-                <td>Rp ${item[1].jumlah.toLocaleString()}</td>
-            </tr>`;
-            tableBody.innerHTML += row;
+        
+        // Urutkan dari yang terbesar
+        data.sort((a, b) => b.jumlah - a.jumlah).forEach(item => {
+            tableBody.innerHTML += `<tr><td>${item.nama}</td><td>Rp ${item.jumlah.toLocaleString()}</td></tr>`;
         });
-    } catch (error) {
-        console.error("Gagal memuat data:", error);
+    } catch (e) {
+        console.error("Gagal memuat:", e);
     }
 }
-updateLeaderboard();
+fetchData();
+
