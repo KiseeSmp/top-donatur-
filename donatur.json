@@ -1,5 +1,5 @@
 const BIN_ID = "6a4e36b1f5f4af5e2971918b"; // Ganti dengan ID bin Anda
-const MASTER_KEY = "MASUKKAN_MASTER_KEY_ANDA_DISINI"; 
+const MASTER_KEY = "$2a$10$7MnRL1oJkfouS3kO8.OS7esEJw9dMTidln6Pihpyp0fILLq/g7.pe"; 
 const DB_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
 
 async function fetchData() {
