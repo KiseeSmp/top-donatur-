@@ -20,30 +20,35 @@
     </table>
 
     <script>
-        // MASUKKAN DATA ANDA DI SINI
-        const BIN_ID = "GANTI_DENGAN_BIN_ID_ANDA";
-        const MASTER_KEY = "GANTI_DENGAN_MASTER_KEY_ANDA";
+        const BIN_ID = "6a69ffedf5f4af5e29d15334";
+        const MASTER_KEY = "$2a$10$c96r/tOVY0F.AfBty8eA9ObI.wy4lhKei5QtDtYdnsl5r9rQxbMfa";
         const DB_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
 
         async function fetchData() {
             try {
                 const res = await fetch(DB_URL, { headers: { "X-Master-Key": MASTER_KEY } });
                 const result = await res.json();
-                const data = result.record.donatur;
-                
+                const data = result.record;
+
                 const tableBody = document.getElementById('tableBody');
                 tableBody.innerHTML = "";
-                
-                // Urutkan donatur berdasarkan jumlah terbanyak (Top 1 ke bawah)
-                data.sort((a, b) => b.jumlah - a.jumlah).forEach(item => {
-                    tableBody.innerHTML += `<tr><td>${item.nama}</td><td>Rp ${item.jumlah.toLocaleString()}</td></tr>`;
-                });
+
+                data
+                    .filter(item => item.status === "verified")
+                    .sort((a, b) => b.amount - a.amount)
+                    .forEach(item => {
+                        tableBody.innerHTML += `<tr><td>${item.name}</td><td>Rp ${item.amount.toLocaleString()}</td></tr>`;
+                    });
+
+                if (tableBody.innerHTML === "") {
+                    tableBody.innerHTML = "<tr><td colspan='2'>Belum ada donatur terverifikasi</td></tr>";
+                }
             } catch (e) {
                 document.getElementById('tableBody').innerHTML = "<tr><td colspan='2'>Gagal memuat data</td></tr>";
             }
         }
+
         fetchData();
     </script>
 </body>
 </html>
-
